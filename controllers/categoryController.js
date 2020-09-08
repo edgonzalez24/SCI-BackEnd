@@ -1,12 +1,12 @@
 const express = require('express');
-const Libro = require('../models/LibroModel')
+const Category = require('../models/CategoryModel')
 
-const registroInventario = async(req, res = express.response) => {
+const addCategory = async(req, res = express.response) => {
 
     // const { nameBook } = req.body; 
     try {
-        const libro = new Libro(req.body)
-        await libro.save();
+        const category = new Category(req.body)
+        await category.save();
 
 
         return res.status(201).json({
@@ -23,5 +23,5 @@ const registroInventario = async(req, res = express.response) => {
 }
 
 module.exports = {
-    registroInventario
+    addCategory
 }
