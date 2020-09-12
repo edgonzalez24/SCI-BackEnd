@@ -38,7 +38,65 @@ const allCategory = async(req, res = response) => {
     }
 }
 
+const updateCategory = async(req, res = response) => {
+    const categoryId = req.params.id;
+
+    try {
+        const categories = await Category.findById(categoryId)
+        if (!categories) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Not Found'
+            })
+        }
+
+        const newCategory = {
+            ...req.body
+        }
+        const actualCategory = await Category.findByIdAndUpdate(categoryId, newCategory, { new: true });
+
+        res.status(201).json({
+            ok: true,
+            categories: actualCategory
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error'
+        });
+    }
+}
+const deleteCategory = async(req, res = response) => {
+    const categoryId = req.params.id;
+
+    try {
+        const categories = await Category.findById(categoryId)
+        if (!categories) {
+            return res.status(404).json({
+                ok: true,
+                msg: 'Not Found'
+            })
+        }
+
+        const actualCategory = await Category.findByIdAndDelete(categoryId);
+
+        res.status(201).json({
+            ok: true,
+            msg: 'Delete Success'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error'
+        });
+    }
+}
+
 module.exports = {
     addCategory,
-    allCategory
+    allCategory,
+    updateCategory,
+    deleteCategory
 }

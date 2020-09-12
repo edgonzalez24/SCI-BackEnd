@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addCategory, allCategory } = require('../controllers/categoryController');
+const { addCategory, allCategory, updateCategory, deleteCategory } = require('../controllers/categoryController');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
@@ -11,5 +11,9 @@ router.post('/add', [
     validarCampos
 ], addCategory)
 
-router.get('/all', allCategory)
+router.get('/all', allCategory);
+
+router.put('/update/:id', updateCategory);
+
+router.delete('/delete/:id', deleteCategory)
 module.exports = router;
