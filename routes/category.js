@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addCategory } = require('../controllers/categoryController');
+const { addCategory, allCategory } = require('../controllers/categoryController');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
@@ -11,5 +11,5 @@ router.post('/add', [
     validarCampos
 ], addCategory)
 
-
+router.get('/all', allCategory)
 module.exports = router;

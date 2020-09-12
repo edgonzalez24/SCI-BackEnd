@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const Category = require('../models/CategoryModel')
 
@@ -20,6 +21,24 @@ const addCategory = async(req, res = express.response) => {
 
 }
 
+const allCategory = async(req, res = response) => {
+    try {
+        let categories = await Category.find();
+        if (categories) {
+            return res.status(201).json({
+                ok: true,
+                categories
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Error'
+        });
+    }
+}
+
 module.exports = {
-    addCategory
+    addCategory,
+    allCategory
 }
