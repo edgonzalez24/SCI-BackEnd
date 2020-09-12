@@ -45,7 +45,7 @@ const updateCategory = async(req, res = response) => {
         const categories = await Category.findById(categoryId)
         if (!categories) {
             return res.status(404).json({
-                ok: true,
+                ok: false,
                 msg: 'Not Found'
             })
         }
