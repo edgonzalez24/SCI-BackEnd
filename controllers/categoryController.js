@@ -2,8 +2,6 @@ const express = require('express');
 const Category = require('../models/CategoryModel')
 
 const addCategory = async(req, res = express.response) => {
-
-    // const { nameBook } = req.body; 
     try {
         const category = new Category(req.body)
         await category.save();

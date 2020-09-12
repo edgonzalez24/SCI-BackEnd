@@ -7,7 +7,7 @@ const { validarCampos } = require('../middlewares/validar-campos')
 
 
 router.post('/add', [
-    check('nameCategory', 'El campo nameCategory es obligatorio').not().isEmpty(),
+    check('name_category', 'El campo name category es obligatorio').not().isEmpty(),
     validarCampos
 ], addCategory)
 

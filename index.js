@@ -4,8 +4,6 @@ require('dotenv').config();
 const cors = require('cors');
 
 
-console.log(process.env)
-
 
 
 //Server
