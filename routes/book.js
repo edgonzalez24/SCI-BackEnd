@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addBook, allBook } = require('../controllers/registroController');
+const { addBook, allBook } = require('../controllers/bookController');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 

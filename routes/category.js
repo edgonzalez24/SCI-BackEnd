@@ -13,7 +13,10 @@ router.post('/add', [
 
 router.get('/all', allCategory);
 
-router.put('/update/:id', updateCategory);
+router.put('/update/:id', [
+    check('name_category', 'El campo name category es obligatorio').not().isEmpty(),
+    validarCampos
+], updateCategory);
 
 router.delete('/delete/:id', deleteCategory)
 module.exports = router;

@@ -1,13 +1,14 @@
 const { response } = require('express');
 const express = require('express');
-const Libro = require('../models/LibroModel')
+const Book = require('../models/BookModel')
+const Category = require('../models/CategoryModel')
 
 const addBook = async(req, res = response) => {
 
     // const { nameBook } = req.body; 
     try {
-        const libro = new Libro(req.body)
-        await libro.save();
+        const Book = new Book(req.body)
+        await Book.save();
 
 
         return res.status(201).json({
@@ -25,14 +26,16 @@ const addBook = async(req, res = response) => {
 const allBook = async(req, res = response) => {
 
     try {
-        let books = await Libro.find();
-
-        if (books) {
-            return res.status(201).json({
-                ok: true,
-                books
+        let books = await Book.find({}, () => {
+            Category.populate(books, { path: "autor" }, () => {
+                if (books) {
+                    return res.status(201).json({
+                        ok: true,
+                        books
+                    })
+                }
             })
-        }
+        });
 
     } catch (error) {
         return res.status(500).json({
