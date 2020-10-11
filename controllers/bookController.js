@@ -1,5 +1,6 @@
 const { response } = require('express');
 const express = require('express');
+const { restart } = require('nodemon');
 const Book = require('../models/BookModel')
 const Category = require('../models/CategoryModel')
 
@@ -12,12 +13,13 @@ const addBook = async(req, res = response) => {
 
 
         return res.status(201).json({
-            ok: true
+            ok: true,
+            message: 'Registro guardado existosamente'
         });
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error al registrar el dato'
+            message: 'Error al registrar Libro'
         });
     }
 
@@ -40,17 +42,62 @@ const allBook = async(req, res = response) => {
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error'
+            message: 'Bad Request'
+        });
+    }
+}
+
+const updateBook = async(req, res = response) => {
+    const bookId = req.params.id;
+    try {
+        const books = await Book.findById(bookId);
+        if (!books) {
+            return res.status(404).json({
+                ok: false,
+                message: 'No se encontró libro'
+            });
+        }
+        const newBook = {
+            ...req.body
+        }
+        const actualBook = await Book.findByIdAndUpdate(bookId, newBook, {
+            new: true
+        });
+
+        res.status(201).json({
+            ok: true,
+            books: actualBook
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Bad Request'
         });
     }
 }
 
 const deleteBook = async(req, res = response) => {
-    await console.log('Delete Book')
-}
+    const bookId = req.params.id;
+    try {
+        const books = await Book.findById(bookId);
+        if (!books) {
+            return res.status(404).json({
+                ok: false,
+                message: 'No se encontró libro'
+            })
+        }
+        const actualBook = await Book.findOneAndDelete(bookId);
 
-const updateBook = async(req, res = response) => {
-    await console.log('Delete Book')
+        res.status(201).json({
+            ok: true,
+            message: 'Registro eliminado existosamente'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Bad Request'
+        });
+    }
 }
 
 module.exports = {

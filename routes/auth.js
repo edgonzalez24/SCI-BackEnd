@@ -5,6 +5,8 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { CreateUser, loginUser, revalidarToken } = require('../controllers/authController');
 
+// This is CRUD Aauth
+
 router.post('/createuser', [
     check('email', 'El campo email es obligatorio').isEmail().not().isEmpty(),
     check('password', 'El campo password es obligatorio').not().isEmpty(),

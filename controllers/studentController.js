@@ -1,11 +1,11 @@
 const { response } = require('express');
 const express = require('express');
-const Category = require('../models/CategoryModel')
+const Student = require('../models/StudentsModel');
 
-const addCategory = async(req, res = express.response) => {
+const addStudent = async(req, res = express.response) => {
     try {
-        const category = new Category(req.body)
-        await category.save();
+        const student = new Student(req.body)
+        await student.save();
 
 
         return res.status(201).json({
@@ -13,7 +13,6 @@ const addCategory = async(req, res = express.response) => {
             message: 'Registro guardado existosamente'
         });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({
             ok: false,
             message: 'Error al registrar estudiante'
@@ -22,13 +21,13 @@ const addCategory = async(req, res = express.response) => {
 
 }
 
-const allCategory = async(req, res = response) => {
+const allStudents = async(req, res = response) => {
     try {
-        let categories = await Category.find();
-        if (categories) {
+        let students = await Student.find();
+        if (students) {
             return res.status(201).json({
                 ok: true,
-                categories
+                students
             })
         }
     } catch (error) {
@@ -39,26 +38,26 @@ const allCategory = async(req, res = response) => {
     }
 }
 
-const updateCategory = async(req, res = response) => {
-    const categoryId = req.params.id;
+const updateStudent = async(req, res = response) => {
+    const studentId = req.params.id;
 
     try {
-        const categories = await Category.findById(categoryId)
-        if (!categories) {
+        const students = await Student.findById(studentId)
+        if (!students) {
             return res.status(404).json({
                 ok: false,
-                message: 'No se encontró categoria'
+                message: 'No se encontró estudiante'
             })
         }
 
-        const newCategory = {
+        const newStudent = {
             ...req.body
         }
-        const actualCategory = await Category.findByIdAndUpdate(categoryId, newCategory, { new: true });
+        const actualStudent = await Student.findByIdAndUpdate(studentId, newStudent, { new: true });
 
         res.status(201).json({
             ok: true,
-            categories: actualCategory
+            student: actualStudent
         })
 
     } catch (error) {
@@ -68,19 +67,19 @@ const updateCategory = async(req, res = response) => {
         });
     }
 }
-const deleteCategory = async(req, res = response) => {
-    const categoryId = req.params.id;
+const deleteStudent = async(req, res = response) => {
+    const studentId = req.params.id;
 
     try {
-        const categories = await Category.findById(categoryId)
-        if (!categories) {
+        const students = await Student.findById(studentId)
+        if (!students) {
             return res.status(404).json({
                 ok: false,
-                message: 'No se encontró categoria'
+                message: 'No se encontró estudiante'
             })
         }
 
-        const actualCategory = await Category.findByIdAndDelete(categoryId);
+        const actualStudent = await Student.findByIdAndDelete(studentId);
 
         res.status(201).json({
             ok: true,
@@ -96,8 +95,8 @@ const deleteCategory = async(req, res = response) => {
 }
 
 module.exports = {
-    addCategory,
-    allCategory,
-    updateCategory,
-    deleteCategory
+    addStudent,
+    allStudents,
+    updateStudent,
+    deleteStudent
 }

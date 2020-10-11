@@ -4,12 +4,12 @@ const { addCategory, allCategory, updateCategory, deleteCategory } = require('..
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
-
+// This is CRUD Categories
 
 router.post('/add', [
     check('name_category', 'El campo name category es obligatorio').not().isEmpty(),
     validarCampos
-], addCategory)
+], addCategory);
 
 router.get('/all', allCategory);
 
@@ -18,5 +18,6 @@ router.put('/update/:id', [
     validarCampos
 ], updateCategory);
 
-router.delete('/delete/:id', deleteCategory)
+router.delete('/delete/:id', deleteCategory);
+
 module.exports = router;

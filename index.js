@@ -16,7 +16,8 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/book', require('./routes/book'));
 app.use('/api/category', require('./routes/category'));
-app.use('/api/lend', require('./routes/lends'))
+app.use('/api/lend', require('./routes/lends'));
+app.use('/api/students', require('./routes/students'));
 
 
 // BD 
