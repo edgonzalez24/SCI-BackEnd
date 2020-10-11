@@ -13,7 +13,7 @@ const addLend = async(req, res = response) => {
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error la registrar el dato'
+            message: 'Error la registrar el dato'
         })
     }
 }
@@ -25,7 +25,7 @@ const updateLend = async(req, res = response) => {
         if (!lends) {
             return res.status(404).json({
                 ok: false,
-                msg: 'Not Found'
+                message: 'Not Found'
             })
         }
         const newLend = {
@@ -41,7 +41,7 @@ const updateLend = async(req, res = response) => {
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            msg: 'Error'
+            message: 'Error'
         });
     }
 }

@@ -11,7 +11,7 @@ const CreateUser = async(req, res = express.response) => {
         if (user) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El usuario ya existe'
+                message: 'El usuario ya existe'
             });
         }
         user = new User(req.body)
@@ -31,7 +31,7 @@ const CreateUser = async(req, res = express.response) => {
         console.log(error)
         return res.status(500).json({
             ok: false,
-            msg: 'Error al registrar el dato'
+            message: 'Error al registrar el dato'
         });
     }
 
@@ -45,14 +45,14 @@ const loginUser = async(req, res = express.response) => {
         if (!user) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Usuario o contraseña es invalido'
+                message: 'Usuario o contraseña es invalido'
             });
         }
         const validPassword = bcrypt.compareSync(password, user.password);
         if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Password Incorrecta'
+                message: 'Password Incorrecta'
             })
         }
 
@@ -71,7 +71,7 @@ const loginUser = async(req, res = express.response) => {
         console.log(error)
         return res.status(500).json({
             ok: false,
-            msg: 'Error al registrar el dato'
+            message: 'Error al registrar el dato'
         });
     }
 
