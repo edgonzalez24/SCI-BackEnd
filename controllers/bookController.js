@@ -1,12 +1,10 @@
 const { response } = require('express');
 const express = require('express');
-const { restart } = require('nodemon');
 const Book = require('../models/BookModel')
 const Category = require('../models/CategoryModel')
 
 const addBook = async(req, res = response) => {
 
-    // const { nameBook } = req.body; 
     try {
         const Book = new Book(req.body)
         await Book.save();

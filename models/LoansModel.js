@@ -1,9 +1,13 @@
 const { Schema, model } = require('mongoose');
 
-const lendSchema = Schema({
+const loanSchema = Schema({
     id_student: {
-        type: String,
-        require: true
+        type: Schema.Types.ObjectId,
+        ref: 'Student'
+    },
+    id_book: {
+        type: Schema.Types.ObjectId,
+        ref: 'Book'
     },
     date_land: {
         type: Date,
@@ -17,4 +21,4 @@ const lendSchema = Schema({
 })
 
 
-module.exports = model('Lend', lendSchema)
+module.exports = model('Loan', loanSchema)

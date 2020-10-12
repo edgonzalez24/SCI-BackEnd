@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 const { check } = require('express-validator');
-const { addLend } = require('../controllers/lendController');
+const { addLoan } = require('../controllers/loansController');
 const { validarCampos } = require('../middlewares/validar-campos')
 
 
 router.post('/add', [
     check('date_land', 'El campo date es obligatorio').not().isEmpty(),
     validarCampos
-], addLend);
+], addLoan);
 
 module.exports = router;

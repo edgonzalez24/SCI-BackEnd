@@ -1,10 +1,10 @@
 const { response } = require('express');
 const express = require('express');
-const Lend = require('../models/LendModel');
+const Loan = require('../models/LoansModel');
 
-const addLend = async(req, res = response) => {
+const addLoan = async(req, res = response) => {
     try {
-        const lend = new Lend(req.body)
+        const lend = new Loan(req.body)
         await lend.save();
         return res.status(201).json({
             ok: true
@@ -18,24 +18,24 @@ const addLend = async(req, res = response) => {
     }
 }
 
-const updateLend = async(req, res = response) => {
+const updateLoan = async(req, res = response) => {
     const leandId = req.params.id;
     try {
-        const lends = await Lend.findById(leandId);
+        const lends = await Loan.findById(leandId);
         if (!lends) {
             return res.status(404).json({
                 ok: false,
                 message: 'Not Found'
             })
         }
-        const newLend = {
+        const newLoan = {
             ...req.body
         }
-        const actualLend = await Lend.findByIdAndUpdate(leandId, newLend, { new: true });
+        const actualLoan = await Loan.findByIdAndUpdate(leandId, newLoan, { new: true });
 
         res.status(201).json({
             ok: true,
-            lends: actualLend
+            lends: actualLoan
         })
 
     } catch (error) {
@@ -48,6 +48,6 @@ const updateLend = async(req, res = response) => {
 
 
 module.exports = {
-    addLend,
-    updateLend
+    addLoan,
+    updateLoan
 }
