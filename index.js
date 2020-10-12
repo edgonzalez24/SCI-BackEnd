@@ -12,6 +12,10 @@ const app = express();
 // Read 
 app.use(express.json());
 
+// CORS
+app.use(cors())
+
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/book', require('./routes/book'));
@@ -23,8 +27,6 @@ app.use('/api/students', require('./routes/students'));
 // BD 
 dbConnection();
 
-// CORS
-app.use(cors())
 
 
 // Public
