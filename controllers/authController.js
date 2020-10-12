@@ -20,11 +20,15 @@ const CreateUser = async(req, res = express.response) => {
         user.password = bcrypt.hashSync(password, salt)
         await user.save();
         // Generar token
-        const token = await generarJWT(user.uid, user.email);
+        const token = await generarJWT(user.uid, user.email, user.rol, user.name, user.lastname, user.username);
         res.status(201).json({
             ok: true,
             uid: user.id,
+            name: user.name,
+            lastname: user.lastname,
             email: user.email,
+            username: user.username,
+            rol: user.rol,
             token
         });
     } catch (error) {
@@ -57,14 +61,17 @@ const loginUser = async(req, res = express.response) => {
         }
 
         // Generar token
-        const token = await generarJWT(user.id, user.email);
-
+        const token = await generarJWT(user.uid, user.email, user.rol, user.name, user.lastname, user.username);
         res.status(201).json({
             ok: true,
             uid: user.id,
+            name: user.name,
+            lastname: user.lastname,
             email: user.email,
+            username: user.username,
+            rol: user.rol,
             token
-        })
+        });
 
 
     } catch (error) {
