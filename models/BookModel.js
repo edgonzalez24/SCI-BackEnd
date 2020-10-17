@@ -18,7 +18,7 @@ const BookSchema = Schema({
         require: true
     },
     date_publication: {
-        type: Date,
+        type: String,
         require: true
     },
     category: {

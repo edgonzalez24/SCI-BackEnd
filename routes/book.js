@@ -7,11 +7,10 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 
 // This is CRUD Register Book
 
-router.post('/add',
-    validarJWT, [
-        check('title_book', 'El campo Title Book es obligatorio').not().isEmpty(),
-        validarCampos
-    ], addBook);
+router.post('/add', [
+    check('title_book', 'El campo Title Book es obligatorio').not().isEmpty(),
+    validarCampos
+], addBook);
 
 router.get('/all', allBook);
 

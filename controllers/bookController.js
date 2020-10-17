@@ -4,10 +4,17 @@ const Book = require('../models/BookModel')
 const Category = require('../models/CategoryModel')
 
 const addBook = async(req, res = response) => {
-
+    const { title_book } = req.body;
     try {
-        const Book = new Book(req.body)
-        await Book.save();
+        let book = await Book.findOne({ title_book })
+        if (book) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Libro ya fue registrado'
+            });
+        }
+        book = new Book(req.body)
+        await book.save();
 
 
         return res.status(201).json({
