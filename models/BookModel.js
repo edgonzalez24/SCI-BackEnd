@@ -1,5 +1,4 @@
-const { Schema, model } = require('mongoose');
-
+const { Schema, model, Mongoose } = require('mongoose');
 const BookSchema = Schema({
     title_book: {
         type: String,
@@ -23,7 +22,7 @@ const BookSchema = Schema({
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Categoria'
+        ref: "Category"
     }
 
 })

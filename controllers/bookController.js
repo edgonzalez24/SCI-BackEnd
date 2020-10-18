@@ -33,15 +33,32 @@ const addBook = async(req, res = response) => {
 const allBook = async(req, res = response) => {
 
     try {
-        let books = await Book.find({}, () => {
-            Category.populate(books, { path: "autor" }, () => {
-                if (books) {
-                    return res.status(201).json({
-                        ok: true,
-                        books
-                    })
-                }
-            })
+        // Book.find()
+        //     .populate({ path: 'Categoria' })
+        //     .exec()
+        //     .then(books => {
+        //         if (books) {
+        //             return res.status(201).json({
+        //                 ok: true,
+        //                 books
+        //             })
+        //         }
+        //     })
+
+        // let books = await Book.find().populate({path: "Categoria"});
+        // if (books) {
+        //     return res.status(201).json({
+        //         ok: true,
+        //         books
+        //     })
+        // }
+        Book.find({}, function(err, books) {
+            Category.populate(books, { path: 'category' }, function(err, books) {
+                res.status(201).json({
+                    ok: true,
+                    books
+                })
+            });
         });
 
     } catch (error) {
