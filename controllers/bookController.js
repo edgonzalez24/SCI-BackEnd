@@ -33,25 +33,6 @@ const addBook = async(req, res = response) => {
 const allBook = async(req, res = response) => {
 
     try {
-        // Book.find()
-        //     .populate({ path: 'Categoria' })
-        //     .exec()
-        //     .then(books => {
-        //         if (books) {
-        //             return res.status(201).json({
-        //                 ok: true,
-        //                 books
-        //             })
-        //         }
-        //     })
-
-        // let books = await Book.find().populate({path: "Categoria"});
-        // if (books) {
-        //     return res.status(201).json({
-        //         ok: true,
-        //         books
-        //     })
-        // }
         Book.find({}, function(err, books) {
             Category.populate(books, { path: 'category' }, function(err, books) {
                 res.status(201).json({
@@ -71,12 +52,19 @@ const allBook = async(req, res = response) => {
 
 const updateBook = async(req, res = response) => {
     const bookId = req.params.id;
+    const { title_book } = req.body;
     try {
         const books = await Book.findById(bookId);
+        let bookR = await Book.findOne({ title_book })
         if (!books) {
             return res.status(404).json({
                 ok: false,
                 message: 'No se encontró libro'
+            });
+        } else if (bookR) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Libro ya fue registrado'
             });
         }
         const newBook = {
@@ -88,7 +76,7 @@ const updateBook = async(req, res = response) => {
 
         res.status(201).json({
             ok: true,
-            books: actualBook
+            message: 'Se ha editado con exito'
         });
     } catch (error) {
         return res.status(500).json({

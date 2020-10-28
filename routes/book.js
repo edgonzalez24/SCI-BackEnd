@@ -14,10 +14,7 @@ router.post('/add', [
 
 router.get('/all', allBook);
 
-router.put('/update/:id', [
-    check('title_book', 'El campo Title Book es obligatorio').not().isEmpty(),
-    validarCampos
-], updateBook);
+router.put('/update/:id', updateBook);
 
 router.delete('/delete/:id', deleteBook);
 
