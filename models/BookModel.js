@@ -20,11 +20,14 @@ const BookSchema = Schema({
         type: String,
         require: true
     },
+    status: {
+        type: Boolean,
+        require: true
+    },
     category: {
         type: Schema.Types.ObjectId,
         ref: "Category"
     }
-
 })
 
 
