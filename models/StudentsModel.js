@@ -21,7 +21,11 @@ const StudentSchema = Schema({
     section: {
         type: String,
         require: true
-    }
+    },
+    teacher: {
+        type: String,
+        require: true
+    },
 })
 
 

@@ -57,7 +57,7 @@ const updateStudent = async(req, res = response) => {
 
         res.status(201).json({
             ok: true,
-            student: actualStudent
+            message: 'Se ha editado con exito'
         })
 
     } catch (error) {

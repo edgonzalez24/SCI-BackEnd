@@ -52,19 +52,12 @@ const allBook = async(req, res = response) => {
 
 const updateBook = async(req, res = response) => {
     const bookId = req.params.id;
-    const { title_book } = req.body;
     try {
         const books = await Book.findById(bookId);
-        let bookR = await Book.findOne({ title_book })
         if (!books) {
             return res.status(404).json({
                 ok: false,
                 message: 'No se encontró libro'
-            });
-        } else if (bookR) {
-            return res.status(400).json({
-                ok: false,
-                message: 'Libro ya fue registrado'
             });
         }
         const newBook = {

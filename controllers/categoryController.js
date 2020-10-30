@@ -58,7 +58,7 @@ const updateCategory = async(req, res = response) => {
 
         res.status(201).json({
             ok: true,
-            categories: actualCategory
+            message: 'Se ha editado con exito'
         })
 
     } catch (error) {
