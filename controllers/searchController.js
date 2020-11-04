@@ -3,14 +3,13 @@ const Book = require('../models/BookModel');
 
 const searchBook = async(req, res = response) => {
     const { title_book } = req.query;
-    console.log(title_book);
     try {
-        let book = await Book.find({ 'title_book': { '$regex': title_book } })
-        console.log(book)
-        if (book) {
+        const regex = new RegExp(title_book, 'i');
+        let books = await Book.find({ 'title_book': regex }).limit(10);
+        if (books) {
             return res.status(201).json({
                 ok: true,
-                book
+                books
             });
         }
         return res.status(400).json({
