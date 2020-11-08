@@ -4,9 +4,9 @@ const Book = require('../models/BookModel')
 const Category = require('../models/CategoryModel')
 
 const addBook = async(req, res = response) => {
-    const { title_book } = req.body;
+    const { isbn_book } = req.body;
     try {
-        let book = await Book.findOne({ title_book })
+        let book = await Book.findOne({ isbn_book })
         if (book) {
             return res.status(400).json({
                 ok: false,
@@ -31,7 +31,6 @@ const addBook = async(req, res = response) => {
 }
 
 const allBook = async(req, res = response) => {
-
     try {
         Book.find({}, function(err, books) {
             Category.populate(books, { path: 'category' }, function(err, books) {
@@ -102,10 +101,34 @@ const deleteBook = async(req, res = response) => {
         });
     }
 }
+const detailBook = async(req, res = response) => {
+    const { id } = req.query;
+    try {
+        const book = await Book.findById(id);
+        if (book) {
+            return res.status(201).json({
+                ok: true,
+                book
+            });
+        }
+
+        res.status(401).json({
+            ok: false,
+            message: 'Libro no encontrado'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Bad Request'
+        });
+    }
+}
+
 
 module.exports = {
     addBook,
     updateBook,
     deleteBook,
-    allBook
+    allBook,
+    detailBook
 }

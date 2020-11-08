@@ -23,6 +23,7 @@ app.use('/api/category', require('./routes/category'));
 app.use('/api/lend', require('./routes/lends'));
 app.use('/api/students', require('./routes/students'));
 app.use('/api/search', require('./routes/search'));
+app.use('/api/mail', require('./routes/mail'));
 
 
 // BD 
