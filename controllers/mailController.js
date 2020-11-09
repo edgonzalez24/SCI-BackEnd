@@ -1,9 +1,13 @@
 const { response } = require('express');
 const nodemailer = require('nodemailer');
+const Request = require('../models/RequestModel');
 
 const sendMail = async(req, res = response) => {
     const { name, lastname, bookName, isbn } = req.body;
     try {
+        const request = new Request(req.body);
+        await request.save();
+
         let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -23,9 +27,8 @@ const sendMail = async(req, res = response) => {
                 '\n Datos de la solicitud:' +
                 "\n Nombre: " + name +
                 "\n Apellido: " + lastname +
-                "\n Nombre de Libro: " + bookName + "con codigo ISBN: " + isbn
+                "\n Nombre de libro: " + bookName + "con codigo ISBN: " + isbn
         };
-        console.log(mailOptions.text)
 
         transporter.sendMail(mailOptions, (error) => {
             if (error) {
@@ -50,6 +53,47 @@ const sendMail = async(req, res = response) => {
 
 }
 
+const getNotifications = async(req, res = response) => {
+
+    try {
+        let notifications = await Request.find();
+        if (notifications) {
+            return res.status(201).json({
+                ok: true,
+                notifications
+            })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Error'
+        });
+    }
+
+}
+
+const updateNotifications = async(req, res = response) => {
+    try {
+        const { id } = req.params
+        const notifications = await Request.findById(id);
+        const newNotification = {...req.body }
+        const actualCategory = await Request.findByIdAndUpdate(id, newNotification);
+        res.status(201).json({
+            ok: true
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Error'
+        });
+    }
+
+}
+
 module.exports = {
-    sendMail
+    sendMail,
+    getNotifications,
+    updateNotifications
 }
