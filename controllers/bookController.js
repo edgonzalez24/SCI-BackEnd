@@ -49,6 +49,24 @@ const allBook = async(req, res = response) => {
     }
 }
 
+const newBooks = async(req, res = response) => {
+    try {
+        Book.find({}, function(err, books) {
+            Category.populate(books, { path: 'category' }, function(err, books) {
+                res.status(201).json({
+                    ok: true,
+                    books
+                })
+            });
+        }).sort({ $natural: -1 }).limit(10);
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Bad Request'
+        });
+    }
+}
+
 const updateBook = async(req, res = response) => {
     const bookId = req.params.id;
     try {
@@ -130,5 +148,6 @@ module.exports = {
     updateBook,
     deleteBook,
     allBook,
-    detailBook
+    detailBook,
+    newBooks
 }
