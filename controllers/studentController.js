@@ -22,14 +22,42 @@ const addStudent = async(req, res = express.response) => {
 }
 
 const allStudents = async(req, res = response) => {
+    const page = parseInt(req.query.pages);
+    const size = 15;
+    const query = {};
     try {
-        let students = await Student.find();
-        if (students) {
-            return res.status(201).json({
-                ok: true,
-                students
-            })
+        if (page < 0 || page === 0) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Numero de paginas debe iniciar en 1'
+            });
         }
+        query.skip = size * (page - 1);
+        query.limit = size;
+
+        await Student.count({}, ((err, totalCount) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Error'
+                });
+            }
+            Student.find({}, {}, query, ((err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'Error en solicitud'
+                    });
+                } else {
+                    const totalPages = Math.ceil(totalCount / size);
+                    return res.status(201).json({
+                        ok: true,
+                        students: data,
+                        pages: totalPages
+                    })
+                }
+            }));
+        }));
     } catch (error) {
         return res.status(500).json({
             ok: false,

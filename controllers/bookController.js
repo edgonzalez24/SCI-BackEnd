@@ -31,15 +31,43 @@ const addBook = async(req, res = response) => {
 }
 
 const allBook = async(req, res = response) => {
+    const page = parseInt(req.query.pages);
+    const size = 5;
+    const query = {};
     try {
-        Book.find({}, function(err, books) {
-            Category.populate(books, { path: 'category' }, function(err, books) {
-                res.status(201).json({
-                    ok: true,
-                    books
-                })
+        if (page < 0 || page === 0) {
+            return res.status(400).json({
+                ok: false,
+                message: 'Numero de paginas debe iniciar en 1'
             });
-        });
+        }
+        query.skip = size * (page - 1);
+        query.limit = size;
+
+        await Book.count({}, ((err, totalCount) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Error'
+                });
+            }
+            Book.find({}, {}, query, ((err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'Error en solicitud'
+                    });
+                } else {
+                    Category.populate(data, { path: 'category' }, ((err, data) => {
+                        res.status(201).json({
+                            ok: true,
+                            books: data,
+                            pages: totalCount
+                        })
+                    }));
+                }
+            }));
+        }));
 
     } catch (error) {
         return res.status(500).json({
@@ -47,6 +75,7 @@ const allBook = async(req, res = response) => {
             message: 'Bad Request'
         });
     }
+
 }
 
 const newBooks = async(req, res = response) => {
