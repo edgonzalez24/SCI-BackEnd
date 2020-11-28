@@ -32,7 +32,7 @@ const addBook = async(req, res = response) => {
 
 const allBook = async(req, res = response) => {
     const page = parseInt(req.query.pages);
-    const size = 5;
+    const size = 15;
     const query = {};
     try {
         if (page < 0 || page === 0) {
