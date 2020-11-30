@@ -53,7 +53,8 @@ const allStudents = async(req, res = response) => {
                     return res.status(201).json({
                         ok: true,
                         students: data,
-                        pages: totalPages
+                        pages: totalPages,
+                        count: totalCount
                     })
                 }
             }));

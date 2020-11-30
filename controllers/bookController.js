@@ -32,7 +32,7 @@ const addBook = async(req, res = response) => {
 
 const allBook = async(req, res = response) => {
     const page = parseInt(req.query.pages);
-    const size = 15;
+    const size = 5;
     const query = {};
     try {
         if (page < 0 || page === 0) {
@@ -59,10 +59,12 @@ const allBook = async(req, res = response) => {
                     });
                 } else {
                     Category.populate(data, { path: 'category' }, ((err, data) => {
+                        const totalPages = Math.ceil(totalCount / size);
                         res.status(201).json({
                             ok: true,
                             books: data,
-                            pages: totalCount
+                            pages: totalPages,
+                            count: totalCount
                         })
                     }));
                 }
