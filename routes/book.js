@@ -1,10 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addBook, allBook, updateBook, deleteBook, detailBook, newBooks } = require('../controllers/bookController');
-const { check } = require('express-validator');
-const { validarCampos } = require('../middlewares/validar-campos')
-const { validarJWT } = require('../middlewares/validar-jwt');
-
+const { addBook, allBook, updateBook, deleteBook, detailBook, newBooks, searchBook } = require('../controllers/bookController');
 // This is CRUD Register Book
 
 router.post('/add', addBook);
@@ -18,5 +14,7 @@ router.delete('/delete/:id', deleteBook);
 router.get('/detail', detailBook);
 
 router.get('/news', newBooks);
+
+router.get('/search', searchBook)
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const { addStudent, allStudents, updateStudent, deleteStudent } = require('../controllers/studentController');
+const { addStudent, allStudents, updateStudent, deleteStudent, searchStudent } = require('../controllers/studentController');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos')
 
@@ -20,4 +20,5 @@ router.put('/update/:id', [
 
 router.delete('/delete/:id', deleteStudent);
 
+router.get('/search', searchStudent)
 module.exports = router;

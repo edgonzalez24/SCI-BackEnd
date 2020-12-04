@@ -108,7 +108,7 @@ const deleteStudent = async(req, res = response) => {
             })
         }
 
-        const actualStudent = await Student.findByIdAndDelete(studentId);
+        await Student.findByIdAndDelete(studentId);
 
         res.status(201).json({
             ok: true,
@@ -123,9 +123,34 @@ const deleteStudent = async(req, res = response) => {
     }
 }
 
+const searchStudent = async(req, res = response) => {
+    const { name } = req.query;
+    try {
+        const regex = new RegExp(name, 'i');
+        let students = await Student.find({ 'name': regex }).limit(10);
+        if (students) {
+            return res.status(201).json({
+                ok: true,
+                students
+            });
+        }
+        return res.status(400).json({
+            ok: false,
+            message: 'Estudiante no encontrado'
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Error al hacer la peticion'
+        });
+    }
+
+}
+
 module.exports = {
     addStudent,
     allStudents,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    searchStudent
 }

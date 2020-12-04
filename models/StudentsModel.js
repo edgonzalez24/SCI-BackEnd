@@ -26,6 +26,10 @@ const StudentSchema = Schema({
         type: String,
         require: true
     },
+    loanStatus: {
+        type: Boolean,
+        require: true
+    }
 })
 
 

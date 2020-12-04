@@ -1,14 +1,33 @@
 const { response } = require('express');
-const express = require('express');
 const Loan = require('../models/LoansModel');
+const Student = require('../models/StudentsModel');
+const Book = require('../models/BookModel');
 
 const addLoan = async(req, res = response) => {
+    const { id_student, id_book } = req.body;
     try {
-        const lend = new Loan(req.body)
-        await lend.save();
-        return res.status(201).json({
-            ok: true
-        })
+        const loan = new Loan(req.body);
+        await loan.save();
+        const students = await Student.findById(id_student);
+        const books = await Book.findById(id_book);
+
+        if (students && books) {
+            const updateLoanStatus = {
+                loanStatus: true,
+            };
+            await Student.findByIdAndUpdate(id_student, updateLoanStatus);
+
+            const updateBookStatus = {
+                status: false,
+            };
+            await Book.findByIdAndUpdate(id_book, updateBookStatus);
+
+            return res.status(201).json({
+                ok: true,
+                message: 'Registro guardado existosamente'
+            });
+        }
+
 
     } catch (error) {
         return res.status(500).json({
@@ -18,30 +37,84 @@ const addLoan = async(req, res = response) => {
     }
 }
 
-const updateLoan = async(req, res = response) => {
-    const leandId = req.params.id;
+const allLoans = async(req, res = response) => {
+    const page = parseInt(req.query.pages);
+    const size = 15;
+    const query = {};
     try {
-        const lends = await Loan.findById(leandId);
-        if (!lends) {
-            return res.status(404).json({
+        if (page < 0 || page === 0) {
+            return res.status(400).json({
                 ok: false,
-                message: 'Not Found'
-            })
+                message: 'Numero de paginas debe iniciar en 1'
+            });
         }
-        const newLoan = {
-            ...req.body
-        }
-        const actualLoan = await Loan.findByIdAndUpdate(leandId, newLoan, { new: true });
+        query.skip = size * (page - 1);
+        query.limit = size;
 
-        res.status(201).json({
-            ok: true,
-            lends: actualLoan
-        })
+        await Loan.count({}, ((err, totalCount) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'Error'
+                });
+            }
+            Loan.find({}, {}, query, ((err, data) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'Error en solicitud'
+                    });
+                } else {
+                    Student.populate(data, { path: 'id_student' }, (err, data) => {
+                        Book.populate(data, { path: 'id_book' }, (err, data) => {
+                            const totalPages = Math.ceil(totalCount / size);
+                            return res.status(201).json({
+                                ok: true,
+                                loans: data,
+                                pages: totalPages,
+                                count: totalCount
+                            })
+                        });
+                    });
+                }
+            }));
+        }));
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            message: 'Bad Request'
+        });
+    }
+}
+
+const deleteLoan = async(req, res = response) => {
+    const { id_student, id_book, id_loan } = req.body;
+    console.log(id_loan);
+    try {
+        const students = await Student.findById(id_student);
+        const books = await Book.findById(id_book);
+
+        if (students && books) {
+            const updateLoanStatus = {
+                loanStatus: false,
+            };
+            await Student.findByIdAndUpdate(id_student, updateLoanStatus);
+
+            const updateBookStatus = {
+                status: true,
+            };
+            await Book.findByIdAndUpdate(id_book, updateBookStatus);
+            await Loan.findByIdAndDelete(id_loan);
+            return res.status(201).json({
+                ok: true,
+                message: 'Registro eliminado existosamente'
+            });
+        }
 
     } catch (error) {
         return res.status(500).json({
             ok: false,
-            message: 'Error'
+            message: 'Bad Request'
         });
     }
 }
@@ -49,5 +122,6 @@ const updateLoan = async(req, res = response) => {
 
 module.exports = {
     addLoan,
-    updateLoan
+    allLoans,
+    deleteLoan,
 }

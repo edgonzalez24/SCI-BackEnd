@@ -20,9 +20,9 @@ app.use(cors())
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/book', require('./routes/book'));
 app.use('/api/category', require('./routes/category'));
-app.use('/api/lend', require('./routes/lends'));
+app.use('/api/loan', require('./routes/loan'));
+app.use('/api/return', require('./routes/return'));
 app.use('/api/students', require('./routes/students'));
-app.use('/api/search', require('./routes/search'));
 app.use('/api/mail', require('./routes/mail'));
 
 

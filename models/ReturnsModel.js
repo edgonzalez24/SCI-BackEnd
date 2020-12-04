@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const loanSchema = Schema({
+const returnSchema = Schema({
     id_student: {
         type: Schema.Types.ObjectId,
         ref: 'Student'
@@ -9,16 +9,11 @@ const loanSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Book'
     },
-    date_loan: {
+    date_return: {
         type: String,
         require: true
     },
-    status: {
-        type: Boolean,
-        require: true
-    }
-
 })
 
 
-module.exports = model('Loan', loanSchema)
+module.exports = model('Return', returnSchema)
