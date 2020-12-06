@@ -136,7 +136,7 @@ const deleteBook = async(req, res = response) => {
                 message: 'No se encontró libro'
             })
         }
-        const actualBook = await Book.findOneAndDelete(bookId);
+        await Book.findOneAndDelete(bookId);
 
         res.status(201).json({
             ok: true,

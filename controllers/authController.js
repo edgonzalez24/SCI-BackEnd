@@ -72,10 +72,7 @@ const loginUser = async(req, res = express.response) => {
             rol: user.rol,
             token
         });
-
-
     } catch (error) {
-        console.log(error)
         return res.status(500).json({
             ok: false,
             message: 'Error al registrar el dato'

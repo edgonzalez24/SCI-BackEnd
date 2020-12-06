@@ -89,7 +89,6 @@ const allLoans = async(req, res = response) => {
 
 const deleteLoan = async(req, res = response) => {
     const { id_student, id_book, id_loan } = req.body;
-    console.log(id_loan);
     try {
         const students = await Student.findById(id_student);
         const books = await Book.findById(id_book);
